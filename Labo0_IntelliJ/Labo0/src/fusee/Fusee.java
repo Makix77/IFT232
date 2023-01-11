@@ -4,9 +4,7 @@ public class Fusee {
     public static void main(String[] args){
         Fusee fusee = new Fusee(5, 1000);
 
-        System.out.println("Masse combustible :");
-        System.out.println(fusee.calculerMasseCombustible());
-        //System.out.println(fusee.dessiner());
+        System.out.println(fusee.dessiner());
     }
     public static final double GRAVITE = 9.8;
     public static final double MASSE = 470;
@@ -18,7 +16,7 @@ public class Fusee {
 
     public Fusee(int hauteur, double masseCargo){
         this.cargo = new Cargo(masseCargo);
-        this.citerne = new Citerne(hauteur);
+        this.citerne = new Citerne(calculerMasseCombustible());
         this.moteur = new Moteur();
     }
 

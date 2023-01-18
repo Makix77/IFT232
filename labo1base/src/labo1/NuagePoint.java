@@ -21,7 +21,7 @@ public class NuagePoint extends Dessin {
     public void lire(Scanner reader){
         int taille = reader.nextInt();
         points = new ArrayList<>(taille);
-        while(reader.hasNextInt()){
+        for(int i = 0; i < taille; i++){
             Point p = new Point();
             p.lire(reader);
             points.add(p);

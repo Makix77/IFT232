@@ -29,7 +29,7 @@
     !{ x y .
 
     	#Test. Retourne un objet booléen
-    	!(x == y)
+    	!(x > y)
     	!ref resultatTest
 
     	#Récupère l'atome booléen du résultat (donc vrai ou faux)
@@ -46,7 +46,7 @@
 	!{.
 		!(self y1)
 		!(self y2)
-		PlusOuMoins
+		!(self +-)
 	}
 	!ref fonctionHauteur
 		
@@ -56,7 +56,7 @@
 	!{.
 		!(self x1)
 		!(self x2)
-		PlusOuMoins
+		!(self +-)
 	}
 	!ref fonctionLargeur	
 	
@@ -86,7 +86,7 @@
 	("x1" "y1" "x2" "y2")
 	
 	#définition des méthodes
-	["vrai" fonctionVrai "faux" fonctionFaux "calcCondition" calcCondition "PlusOuMoins" PlusOuMoins "hauteur" fonctionHauteur "largeur" fonctionLargeur "perimetre" fonctionPerimetre, "aire" fonctionAire]
+	["vrai" fonctionVrai "faux" fonctionFaux "calcCondition" calcCondition "PlusOuMoins" PlusOuMoins "hauteur" fonctionHauteur "largeur" fonctionLargeur "perimetre" fonctionPerimetre "aire" fonctionAire "+-" PlusOuMoins]
 	
 	#Définition de la classe
 	!(Class new)	

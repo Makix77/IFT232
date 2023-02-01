@@ -1,0 +1,149 @@
+!load JarvisLib/basictypes.txt
+!load JarvisLib/util.txt
+!mute
+
+#Attention! Vous devez modifier ce test pour établir le lien d'héritage entre les classes.
+#L'écriture peut varier selon votre implémentation.
+#D'autres tests devront être modifiés après que l'héritage ait été défini.
+#N'oubliez pas de modifier rétroactivement vos autres tests.
+#Une fois la deuxième partie de l'héritage implantée, ce test ne peut pas fonctionner tel quel, les membres
+#seront dupliqués! Vous pouvez le rétro-modifier, ou le laisser tel quel. Si vous avez correctement
+#implanté l'héritage de membres, ce test sera ignoré, étant donné que l'héritage de méthodes est
+#également testé dans heritagemembres.txt
+
+
+#Définition de la classe Félin
+!{.
+
+	!{.
+		"silence..."
+	}
+	!ref sonFonction
+	
+	!{.
+		"Miamscrunchscrunch"
+	}
+	!ref mangerFonction
+	
+	
+	("description")
+	
+	["son" sonFonction "manger" mangerFonction]
+	
+	
+	
+	!(Class new)
+}
+!a
+!ref Felin
+
+#Définition de la classe Chat
+!{.
+
+	!{.
+		"Meow"
+	}
+	!ref sonFonction	
+	
+	
+	!{.
+		!(self age)
+		!(int new)
+		!(!a * 4)
+		!(!a value)		
+	}
+	!ref fonctionAgeHumain
+	
+	("description" "age")
+	
+	["son" sonFonction "ageHumain" fonctionAgeHumain]
+	
+	
+	
+	!(Class new)
+}
+!a
+!ref Chat
+
+#Définition de la classe Chat Domestique
+!{.
+	
+	("description" "age" "nom")
+	
+	[]	
+	
+	
+	!(Class new)
+}
+!a
+!ref ChatDom
+
+
+#Tests avec Félin
+!(Felin new "Ceci-est-un-félin")
+!ref lefelin
+
+!(lefelin description)
+!p
+!c
+!(lefelin son)
+!p
+!c
+!(lefelin manger)
+!p
+!c
+
+
+#Tests avec Chat
+!(Chat new "Ceci-est-un-chat" 8)
+!ref lechat
+
+!(lechat description)
+!p
+!c
+!(lechat age)
+!p
+!c
+!(lechat son)
+!p
+!c
+!(lechat manger)
+!p
+!c
+
+!(lechat ageHumain)
+!p
+!c
+
+
+
+#Tests avec ChatDom
+!(ChatDom new "Ceci-est-un-chat-domestique" 5 "Mistigri")
+!ref lechatdom
+
+!(lechatdom description)
+!p
+!c
+!(lechatdom age)
+!p
+!c
+!(lechatdom son)
+!p
+!c
+
+!(lechatdom manger)
+!p
+!c
+
+!(lechatdom nom)
+!p
+!c
+
+!(lechatdom ageHumain)
+!p
+!c
+
+
+
+	
+!unmute

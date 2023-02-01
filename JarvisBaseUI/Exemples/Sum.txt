@@ -1,0 +1,61 @@
+
+!load JarvisLib/basictypes.txt
+!load JarvisLib/util.txt
+
+
+
+#Calcul d'une sommation. Attachez vos tuques avec de la broche à foin!
+
+
+#definition de la fonction sommation
+
+!ref
+Sum
+!{n .
+
+
+	#résultat lorsque la condition est vraie: retournera 0.
+	
+	!{.
+		0
+	}
+	
+	#resultat lorsque la condition est fausse: appel recursif
+	
+	!{.
+		#calcule n-1
+		!(n - 1)
+	
+		#appel récursif avec n-1 (utilise le dernier résultat)
+		Sum
+		#addition du resultat avec n
+		!(n +)
+	}
+	
+	#definition de quoi faire avec la valeur de resCondition true: retourne 0, false: appel récursif
+	
+	!(ifelse new)
+	!ref SumTest
+
+	#condition: n==0 
+	!(n == 0)
+	#Le résultat est un objet booléen
+	!(!a value)
+	#La valeur de l'objet booléen est mis dans la file.
+	
+	#Le résultat de la condition est dans la file. Opère le if-else SumTest avec ce résultat. 
+	#Obtient et évalue la closure correspondante.
+	!(SumTest !a)
+	
+	
+}
+#fin de la définition de sommation
+
+!(int new 100)
+
+Sum
+pint
+
+
+
+

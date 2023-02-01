@@ -1,0 +1,74 @@
+
+!load JarvisLib/basictypes.txt
+!load JarvisLib/util.txt
+
+!mute
+
+#Fonction qui additionne deux ints
+!{.
+
+	!(x + y)
+}
+!ref fonctionVrai
+
+#Fonction qui soustrait deux int
+!{.
+	
+	!(x - y)
+}
+!ref fonctionFaux
+
+#Nouvel objet ifelse qui a pour membres: vrai = fonctionVrai et faux = fonctionFaux
+!(ifelse new fonctionVrai fonctionFaux)
+!ref calcCondition
+
+#Fonction qui fait un test et utilise calcCondition pour faire le calcul selon
+#le résultat de la condition
+!{ x y .
+	
+	#Test. Retourne un objet booléen
+	!(x == y)
+	!ref resultatTest
+	
+	#Récupère l'atome booléen du résultat (donc vrai ou faux)
+	!(resultatTest value)
+	!ref vraifaux		
+	#Va chercher le membre vrai ou le membre faux selon
+	#la valeur de l'atome booléen (il sert de sélecteur).
+	!(calcCondition vraifaux)
+}
+!ref SommeOuDifference
+
+#Quelques tests...
+
+!(int new 94)
+!ref a
+
+!(int new 35)
+!ref b
+
+a
+b
+
+SommeOuDifference
+
+pint
+
+
+
+!(int new 94)
+!ref c
+
+!(int new 94)
+!ref d
+
+c
+d
+
+SommeOuDifference
+
+pint
+
+
+		
+

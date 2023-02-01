@@ -1,0 +1,23 @@
+!mute
+
+#Fonction qui imprime la valeur d'un objet de type entier
+!{ num .
+	
+	!(num value)
+	!p
+	!c
+}
+!ref pint
+
+#Fonction qui imprime la valeur d'un objet de type booléen
+!{ tv .
+	
+	!(tv value)
+	!p
+	!c
+}
+!ref pbool
+
+
+
+!unmute

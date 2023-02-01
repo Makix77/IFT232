@@ -1,0 +1,7 @@
+!ui
+!load JarvisLib\basictypes.txt
+!(int new 5)
+!ref x
+!(x value)
+!c
+x

@@ -1,0 +1,137 @@
+!load JarvisLib/basictypes.txt
+!load JarvisLib/util.txt
+!load Exemples/ifelse.txt
+!mute
+
+#Fonction de création de la classe Rectangle
+!{.
+
+    #Fonction qui soustrait deux ints
+    !{.
+
+    	!(x - y)
+    }
+    !ref fonctionVrai
+
+    #Fonction qui soustrait deux ints
+    !{.
+
+    	!(y - x)
+    }
+    !ref fonctionFaux
+
+    #Nouvel objet ifelse qui a pour membres: vrai = fonctionVrai et faux = fonctionFaux
+    !(ifelse new fonctionVrai fonctionFaux)
+    !ref calcCondition
+
+    #Fonction qui fait un test et utilise calcCondition pour faire le calcul selon
+    #le résultat de la condition
+    !{ x y .
+
+    	#Test. Retourne un objet booléen
+    	!(x == y)
+    	!ref resultatTest
+
+    	#Récupère l'atome booléen du résultat (donc vrai ou faux)
+    	!(resultatTest value)
+    	!ref vraifaux
+    	#Va chercher le membre vrai ou le membre faux selon
+    	#la valeur de l'atome booléen (il sert de sélecteur).
+    	!(calcCondition vraifaux)
+    }
+    !ref PlusOuMoins
+
+	#RECTANGLE : à modifier
+	#fonction de calcul de la hauteur
+	!{.
+		!(self y1)
+		!(self y2)
+		PlusOuMoins
+	}
+	!ref fonctionHauteur
+		
+	#RECTANGLE : à modifier
+	#fonction de calcul de la largeur	
+	
+	!{.
+		!(self x1)
+		!(self x2)
+		PlusOuMoins
+	}
+	!ref fonctionLargeur	
+	
+	#fonction de calcul du périmètre
+	
+	!{.
+		!(self hauteur)
+		!ref h
+		!(self largeur)
+		!ref l
+		!(h + l)
+		!(!a * 2)		
+	}
+	!ref fonctionPerimetre
+
+	#fonction de calcul de l'aire
+	!{.
+    		!(self hauteur)
+    		!ref h
+    		!(self largeur)
+    		!ref l
+    		!(h * l)
+    	}
+    	!ref fonctionAire
+	
+	#définition des membres
+	("x1" "y1" "x2" "y2")
+	
+	#définition des méthodes
+	["vrai" fonctionVrai "faux" fonctionFaux "calcCondition" calcCondition "PlusOuMoins" PlusOuMoins "hauteur" fonctionHauteur "largeur" fonctionLargeur "perimetre" fonctionPerimetre, "aire" fonctionAire]
+	
+	#Définition de la classe
+	!(Class new)	
+}
+#interprète la fonction qu'on vient de créer.
+!a
+
+!ref Rectangle
+
+!(int new 3)
+!ref a
+!(int new 17)
+!ref b
+!(int new 9)
+!ref c
+!(int new 45)
+!ref d
+
+!(Rectangle new a b c d)
+!ref rect
+
+
+
+!(rect hauteur)
+pint
+!(rect largeur)
+pint
+!(rect perimetre)
+pint
+!(int new 17)
+!ref e
+!(int new 23)
+!ref f
+!(int new 5)
+!ref g
+!(int new 10)
+!ref h
+
+!(Rectangle new e f g h)
+!ref rect2
+
+!(rect2 hauteur)
+pint
+!(rect2 largeur)
+pint
+!(rect2 perimetre)
+pint
+

@@ -31,7 +31,7 @@
 #OPERATIONSPRIMITIVES
 #définition incomplète de la classe bool.
 ("value")
-["&&" _booleanAndPrimitive "||" _booleanOrPrimitive "!" _booleanIsTruePrimitive]
+["&&" _booleanAndPrimitive "||" _booleanOrPrimitive "!" _booleanReversePrimitive]
 !(Class new)
 !ref bool
 

@@ -5,70 +5,62 @@
 
 #Fonction de création de la classe Rectangle
 !{.
-
-    #Fonction qui soustrait deux ints
     !{.
-
-    	!(x - y)
+        !(x * -1)
     }
     !ref fonctionVrai
 
-    #Fonction qui soustrait deux ints
     !{.
-
-    	!(y - x)
+        !(x)
     }
     !ref fonctionFaux
-
-    #Nouvel objet ifelse qui a pour membres: vrai = fonctionVrai et faux = fonctionFaux
     !(ifelse new fonctionVrai fonctionFaux)
     !ref calcCondition
 
-    #Fonction qui fait un test et utilise calcCondition pour faire le calcul selon
-    #le résultat de la condition
-    !{ x y .
+    !{ x .
 
     	#Test. Retourne un objet booléen
-    	!(x > y)
+    	!(x < 0)
     	!ref resultatTest
 
     	#Récupère l'atome booléen du résultat (donc vrai ou faux)
     	!(resultatTest value)
     	!ref vraifaux
+
     	#Va chercher le membre vrai ou le membre faux selon
     	#la valeur de l'atome booléen (il sert de sélecteur).
     	!(calcCondition vraifaux)
     }
-    !ref PlusOuMoins
+    !ref ValeurAbsolue
 
 	#RECTANGLE : à modifier
 	#fonction de calcul de la hauteur
 	!{.
-		!(self y1)
 		!(self y2)
-		!(self +-)
+		!(self y1)
+		ValeurAbsolue
 	}
 	!ref fonctionHauteur
-		
+
 	#RECTANGLE : à modifier
-	#fonction de calcul de la largeur	
-	
+	#fonction de calcul de la largeur
+
 	!{.
-		!(self x1)
 		!(self x2)
-		!(self +-)
+		!(self x1)
+        ValeurAbsolue
 	}
-	!ref fonctionLargeur	
-	
+	!ref fonctionLargeur
+
 	#fonction de calcul du périmètre
-	
+
 	!{.
 		!(self hauteur)
 		!ref h
 		!(self largeur)
 		!ref l
 		!(h + l)
-		!(!a * 2)		
+		!(!a * 2)
 	}
 	!ref fonctionPerimetre
 
@@ -81,15 +73,15 @@
     		!(h * l)
     	}
     	!ref fonctionAire
-	
+
 	#définition des membres
 	("x1" "y1" "x2" "y2")
-	
+
 	#définition des méthodes
-	["vrai" fonctionVrai "faux" fonctionFaux "calcCondition" calcCondition "PlusOuMoins" PlusOuMoins "hauteur" fonctionHauteur "largeur" fonctionLargeur "perimetre" fonctionPerimetre "aire" fonctionAire "+-" PlusOuMoins]
-	
+	["vrai" fonctionVrai "faux" fonctionFaux "calcCondition" calcCondition "hauteur" fonctionHauteur "largeur" fonctionLargeur "perimetre" fonctionPerimetre "aire" fonctionAire]
+
 	#Définition de la classe
-	!(Class new)	
+	!(Class new)
 }
 #interprète la fonction qu'on vient de créer.
 !a

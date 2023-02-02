@@ -20,63 +20,63 @@ import jarvis.atoms.ObjectAtom;
 import jarvis.atoms.StringAtom;
 import jarvis.atoms.primitives.OperatorNewPrimitive;
 
-import jarvis.atoms.primitives.integers.IntegerPrimitiveAdd;
-import jarvis.atoms.primitives.integers.IntegerPrimitiveEquals;
-import jarvis.atoms.primitives.integers.IntegerPrimitiveMultiply;
-import jarvis.atoms.primitives.integers.IntegerPrimitiveSubtract;
+import jarvis.atoms.primitives.booleans.BooleanPrimitiveAnd;
+import jarvis.atoms.primitives.booleans.BooleanPrimitiveOr;
+import jarvis.atoms.primitives.booleans.BooleanPrimitiveReverse;
+import jarvis.atoms.primitives.integers.*;
 import jarvis.exceptions.UndefinedSymbolException;
 import jarvis.ui.MainWindow;
 
 public class JarvisInterpreter {
 
 	
-	// Référence à l'environnement courant
+	// Rï¿½fï¿½rence ï¿½ l'environnement courant
 	private JarvisEnvironment environment;
 
-	// Référence à l'interface graphique
+	// Rï¿½fï¿½rence ï¿½ l'interface graphique
 	private MainWindow ui;
 
-	// Détermine si les valeurs lues par l'interpréteur sont réaffichées sur la
+	// Dï¿½termine si les valeurs lues par l'interprï¿½teur sont rï¿½affichï¿½es sur la
 	// console
 	private boolean echo;
-	// Détermine si l'invite de commande doit apparaître
+	// Dï¿½termine si l'invite de commande doit apparaï¿½tre
 	private boolean prompt;
 
-	//Détermine si on avance pas à pas au lieu d'exécuter directement.
+	//Dï¿½termine si on avance pas ï¿½ pas au lieu d'exï¿½cuter directement.
 	private boolean step;
 	
-	//Objet utilisé pour la synchro avec l'interface usager.
+	//Objet utilisï¿½ pour la synchro avec l'interface usager.
 	private Object uiLock;
 	
 	// File contenant les arguments pour le prochain envoi de message.
 	// Les fonctions et closures peuvent avoir l'effet de bord de mettre des
 	// atomes dans cette file.
-	// C'est le mécanisme de retour et de passage de paramètres.
+	// C'est le mï¿½canisme de retour et de passage de paramï¿½tres.
 	private Queue<AbstractAtom> argQueue;
 
 	/*
-	 * Pile contenant des commandes à évaluer. Utilisée lorsqu'une closure est
-	 * évaluéeou qu'un fichier est chargé avec la commande CMD_LOAD.Les lignes
+	 * Pile contenant des commandes ï¿½ ï¿½valuer. Utilisï¿½e lorsqu'une closure est
+	 * ï¿½valuï¿½eou qu'un fichier est chargï¿½ avec la commande CMD_LOAD.Les lignes
 	 * de texte qui contiennent plus qu'une valeur placent les valeurs suivantes
-	 * sur cette pile.Cette pile est doit être vide avant de lire des commandes
+	 * sur cette pile.Cette pile est doit ï¿½tre vide avant de lire des commandes
 	 * dans un fichier ou sur la ligne de commande.
 	 */
 	private Stack<String> evalStack;
 
-	// Indique qu'une errerur est survenue plus tôt (outputError).
+	// Indique qu'une errerur est survenue plus tï¿½t (outputError).
 	private boolean hasCrashed;
 
-	// Indique que la commande CMD_QUIT a été interprétée.
+	// Indique que la commande CMD_QUIT a ï¿½tï¿½ interprï¿½tï¿½e.
 	private boolean hasQuit;
 	
 	private boolean fromFile;
 
-	// Le flot d'entrée courant (fichier ou clavier)
+	// Le flot d'entrï¿½e courant (fichier ou clavier)
 	private BufferedReader reader;
 
 	/*
-	 * Constructeur. Au démarrage, un flot d'entrée doit être spécifié. Lorsque
-	 * c'est un fichier, l'echo et le prompt devraient être mis à false.
+	 * Constructeur. Au dï¿½marrage, un flot d'entrï¿½e doit ï¿½tre spï¿½cifiï¿½. Lorsque
+	 * c'est un fichier, l'echo et le prompt devraient ï¿½tre mis ï¿½ false.
 	 */
 	public JarvisInterpreter(BufferedReader r, boolean e, boolean p,boolean f) {
 
@@ -91,7 +91,7 @@ public class JarvisInterpreter {
 	}
 
 	/*
-	 * Initialisation de l'interpréteur.
+	 * Initialisation de l'interprï¿½teur.
 	 */
 
 	private void init() {
@@ -100,24 +100,24 @@ public class JarvisInterpreter {
 		hasCrashed = false;
 		hasQuit = false;
 
-		// Création de l'environnement racine. Il contient uniquement les
+		// Crï¿½ation de l'environnement racine. Il contient uniquement les
 		// fonctions tricheuses.
 		environment = new JarvisEnvironment(this);
 
-		// Ajout des fonctions tricheuses (primitives codées en Java).
+		// Ajout des fonctions tricheuses (primitives codï¿½es en Java).
 		addCheaterCode();
 
-		// Création de l'environnement d'interprétation de départ. Son parent
+		// Crï¿½ation de l'environnement d'interprï¿½tation de dï¿½part. Son parent
 		// est l'environnement de base.
 		environment = new JarvisEnvironment(this, environment);
 
 		// Initialisation de la file d'arguments
 		argQueue = new LinkedList<AbstractAtom>();
 
-		// Initialisation de la pile d'évaluation
+		// Initialisation de la pile d'ï¿½valuation
 		evalStack = new Stack<String>();
 
-		// Création de la classe de base.
+		// Crï¿½ation de la classe de base.
 		createClassClass();
 	}
 
@@ -125,53 +125,59 @@ public class JarvisInterpreter {
 	// MUTATEUR
 	/*
 	 * Cette fonction ajoute les primitives du langage dans l'environnement. Les
-	 * primitives sont des fonctions qui s'exécutent en Java. Elles sont cachées
-	 * dans un environnement parent à celui dans lequel l'interpréteur démarre.
+	 * primitives sont des fonctions qui s'exï¿½cutent en Java. Elles sont cachï¿½es
+	 * dans un environnement parent ï¿½ celui dans lequel l'interprï¿½teur dï¿½marre.
 	 */
 	private void addCheaterCode() {
 
 		environment.put("_integerAddPrimitive", new IntegerPrimitiveAdd());
 		environment.put("_integerSubtractPrimitive", new IntegerPrimitiveSubtract());
 		environment.put("_integerMultiplyPrimitive", new IntegerPrimitiveMultiply());
+		environment.put("_integerDividePrimitive", new IntegerPrimitiveDivide());
+		environment.put("_integerLessPrimitive", new IntegerPrimitiveLess());
+		environment.put("_integerMorePrimitive", new IntegerPrimitiveMore());
 		environment.put("_integerEqualsPrimitive", new IntegerPrimitiveEquals());
 		environment.put("_operatorNewPrimitive", new OperatorNewPrimitive());
+		environment.put("_booleanReversePrimitive", new BooleanPrimitiveReverse());
+		environment.put("_booleanAndPrimitive", new BooleanPrimitiveAnd());
+		environment.put("_booleanOrPrimitive", new BooleanPrimitiveOr());
 
 	}
 
-	// HÉRITAGE
+	// Hï¿½RITAGE
 	// VARIABLESCLASSE
 	/*
-	 * Cette fonction crée la classe des classes. Celle-ci spécifie qu'une
-	 * classe a deux champs: attributes et methods. Pour créer une classe
-	 * valide, attributes doit être une liste de StringAtom et methods doit être
+	 * Cette fonction crï¿½e la classe des classes. Celle-ci spï¿½cifie qu'une
+	 * classe a deux champs: attributes et methods. Pour crï¿½er une classe
+	 * valide, attributes doit ï¿½tre une liste de StringAtom et methods doit ï¿½tre
 	 * un dictionnaire de paires StringAtom:JarvisAtom.
 	 * 
-	 * Cette classe ne contient qu'une méthode: la fonction tricheuse
+	 * Cette classe ne contient qu'une mï¿½thode: la fonction tricheuse
 	 * OperatorNewPrimitive.
 	 * 
-	 * Cette classe ne devrait pas être codée en Jarvis. Un changement dans
+	 * Cette classe ne devrait pas ï¿½tre codï¿½e en Jarvis. Un changement dans
 	 * l'organisation des membres de cette classe implique aussi potentiellement
-	 * un changement de l'algorithme d'interprétation de messages se trouvant
+	 * un changement de l'algorithme d'interprï¿½tation de messages se trouvant
 	 * dans ObjectAtom (JarvisObjet.message( ... )). De plus, cette classe doit
-	 * être sa propre classe. Le symbole Class ne peut pas être résolu par
-	 * l'interpréteur avant d'exister! La référence à la classe doit également
-	 * demeurer un lien direct vers l'objet-classe en question. Si c'était
-	 * uniquement un symbole à interpréter, on pourrait définir avec le même nom
-	 * qu'une classe et ainsi empêcher les objets de retrouver leur classe.
+	 * ï¿½tre sa propre classe. Le symbole Class ne peut pas ï¿½tre rï¿½solu par
+	 * l'interprï¿½teur avant d'exister! La rï¿½fï¿½rence ï¿½ la classe doit ï¿½galement
+	 * demeurer un lien direct vers l'objet-classe en question. Si c'ï¿½tait
+	 * uniquement un symbole ï¿½ interprï¿½ter, on pourrait dï¿½finir avec le mï¿½me nom
+	 * qu'une classe et ainsi empï¿½cher les objets de retrouver leur classe.
 	 */
 
 	private void createClassClass() {
 
 		/*
-		 * Création de la liste de membres. Un objet instancié par cette classe
+		 * Crï¿½ation de la liste de membres. Un objet instanciï¿½ par cette classe
 		 * comprend deux membres, la liste des attributs, ainsi que le
-		 * dictionnaire des méthodes. ATTENTION! Rien ne garantit qu'une
-		 * instance sera créée avec une liste et un dictionnaire comme
-		 * arguments! Lisez bien les définitions des classes de base
+		 * dictionnaire des mï¿½thodes. ATTENTION! Rien ne garantit qu'une
+		 * instance sera crï¿½ï¿½e avec une liste et un dictionnaire comme
+		 * arguments! Lisez bien les dï¿½finitions des classes de base
 		 * (basictypes.txt) pour avoir des exemples. Si vous modifiez
 		 * l'organisation de Class, il faut aussi modifier comment instancier
 		 * des classes. Il est possible que vous deviez changer toutes les
-		 * définitions de classes de basictypes.txt.
+		 * dï¿½finitions de classes de basictypes.txt.
 		 */
 		ListAtom members = new ListAtom();
 		members.add(new StringAtom("attributes"));
@@ -181,17 +187,17 @@ public class JarvisInterpreter {
 		DictionnaryAtom methods = new DictionnaryAtom(m);
 
 		/*
-		 * Cette classe ne contient qu'une méthode, new. Celle-ci fait usage de
-		 * la fonction tricheuse OperatorNewPrimitive. Comme un objet résultant
-		 * de !(Class new) est instance de Class, il supportera nécessairement
+		 * Cette classe ne contient qu'une mï¿½thode, new. Celle-ci fait usage de
+		 * la fonction tricheuse OperatorNewPrimitive. Comme un objet rï¿½sultant
+		 * de !(Class new) est instance de Class, il supportera nï¿½cessairement
 		 * new aussi (C'est donc une classe). Class supporte new parce qu'elle
-		 * est instance d'elle-même.
+		 * est instance d'elle-mï¿½me.
 		 */
 		methods.put("new", new OperatorNewPrimitive());
 
 		/*
-		 * Création d'un objet qui sera instance de Class Ses données seront la
-		 * liste des attributs dictionnaire de méthodes créés plus haut.
+		 * Crï¿½ation d'un objet qui sera instance de Class Ses donnï¿½es seront la
+		 * liste des attributs dictionnaire de mï¿½thodes crï¿½ï¿½s plus haut.
 		 */
 		ArrayList<AbstractAtom> data = new ArrayList<AbstractAtom>();
 
@@ -201,14 +207,14 @@ public class JarvisInterpreter {
 		ObjectAtom ClassClass = new ObjectAtom(null, data, this);
 
 		/*
-		 * Cet objet contient la définition d'une classe et est instance de
-		 * lui-même.
+		 * Cet objet contient la dï¿½finition d'une classe et est instance de
+		 * lui-mï¿½me.
 		 */
 		ClassClass.setClass(ClassClass);
 
 		/*
 		 * Ajout de la classe de base dans l'environnement. Elle s'appelle
-		 * Class, bien sûr. L'appeler Hippopotamme n'aurait pas été très
+		 * Class, bien sï¿½r. L'appeler Hippopotamme n'aurait pas ï¿½tï¿½ trï¿½s
 		 * pratique.
 		 */
 		environment.put("Class", ClassClass);
@@ -216,15 +222,15 @@ public class JarvisInterpreter {
 	}
 
 	/*
-	 * Cette fonction implante une partie de la boucle d'interprétation. Elle
-	 * lit une commande à partir du flot d'entrée et l'interprète. Les
-	 * exceptions lancées un peu partout dans l'interpréteur sont attrappées
-	 * ici. Lorsqu'une exception survient, l'interpréteur tente de redémarrer
-	 * afin que l'utilisateur puisse avoir un peu de contrôle après l'erreur.
-	 * Pour déterminer où se trouve une erreur dans du code Jarvis, il faut
-	 * ajouter des points d'arrêt dans le fichier de code avec la commande
-	 * CMD_DEBUG. L'état de l'environnement n'est pas nécessairement correct
-	 * après qu'une erreur soit survenue.
+	 * Cette fonction implante une partie de la boucle d'interprï¿½tation. Elle
+	 * lit une commande ï¿½ partir du flot d'entrï¿½e et l'interprï¿½te. Les
+	 * exceptions lancï¿½es un peu partout dans l'interprï¿½teur sont attrappï¿½es
+	 * ici. Lorsqu'une exception survient, l'interprï¿½teur tente de redï¿½marrer
+	 * afin que l'utilisateur puisse avoir un peu de contrï¿½le aprï¿½s l'erreur.
+	 * Pour dï¿½terminer oï¿½ se trouve une erreur dans du code Jarvis, il faut
+	 * ajouter des points d'arrï¿½t dans le fichier de code avec la commande
+	 * CMD_DEBUG. L'ï¿½tat de l'environnement n'est pas nï¿½cessairement correct
+	 * aprï¿½s qu'une erreur soit survenue.
 	 */
 
 	public void run() {
@@ -285,8 +291,8 @@ public class JarvisInterpreter {
 	}
 
 	/*
-	 * Tentative de redémarrage. Vide la liste d'arguments et la pile
-	 * d'évaluation. Vous pouvez faire quelque-chose de plus intelligent ici.
+	 * Tentative de redï¿½marrage. Vide la liste d'arguments et la pile
+	 * d'ï¿½valuation. Vous pouvez faire quelque-chose de plus intelligent ici.
 	 */
 	private void reset() {
 
@@ -295,9 +301,9 @@ public class JarvisInterpreter {
 	}
 
 	/*
-	 * Cas spécial qui survient lorsque l'interpréteur dépile
-	 * CMD_ENDOFENVIRONMENT. Cette commande se trouve empilée lorsqu'on entre
-	 * dans une closure et qu'on crée son environnement.
+	 * Cas spï¿½cial qui survient lorsque l'interprï¿½teur dï¿½pile
+	 * CMD_ENDOFENVIRONMENT. Cette commande se trouve empilï¿½e lorsqu'on entre
+	 * dans une closure et qu'on crï¿½e son environnement.
 	 */
 	public void endOfEnvironment() {
 		if (environment.hasParent()) {
@@ -310,15 +316,15 @@ public class JarvisInterpreter {
 
 	// SOUSLECAPOT
 	/*
-	 * Interprétation de message. Plusieurs trucs pas parfaitement propres ici
-	 * Ceci est la partie de l'interpréteur qui sert à fabriquer des messages et
+	 * Interprï¿½tation de message. Plusieurs trucs pas parfaitement propres ici
+	 * Ceci est la partie de l'interprï¿½teur qui sert ï¿½ fabriquer des messages et
 	 * les envoyer aux objets.
 	 */
 
 	public void message() {
 
-		// Les atomes liés à des symboles ne doivent pas être interprétés
-		// récursivement ici
+		// Les atomes liï¿½s ï¿½ des symboles ne doivent pas ï¿½tre interprï¿½tï¿½s
+		// rï¿½cursivement ici
 		CommandAtom.setDontInterpret(true);
 
 		CommandAtom cmd;
@@ -326,14 +332,14 @@ public class JarvisInterpreter {
 
 		ObjectAtom obj;
 
-		// Les symboles indéfinis sont détectés localement au cas où un
-		// traitement spécial
-		// devrait être fait dans le futur
+		// Les symboles indï¿½finis sont dï¿½tectï¿½s localement au cas oï¿½ un
+		// traitement spï¿½cial
+		// devrait ï¿½tre fait dans le futur
 		CommandAtom.setAcceptUndefined(true);
 
-		// Lecture de la première valeur: le destinataire du message.
+		// Lecture de la premiï¿½re valeur: le destinataire du message.
 		// Celui-ci peut se trouver dans la liste d'arguments.
-		// Pour l'en récupérer, il faut utiliser la commande CMD_ARG
+		// Pour l'en rï¿½cupï¿½rer, il faut utiliser la commande CMD_ARG
 		cmd = readCommandFromInput();
 		AbstractAtom res = cmd.interpretNoPut(this);
 		try {
@@ -345,14 +351,14 @@ public class JarvisInterpreter {
 		}
 
 		if (res.isUndefined()) {
-			throw new UndefinedSymbolException(cmd.makeKey() + ": symbole indéfini");
+			throw new UndefinedSymbolException(cmd.makeKey() + ": symbole indï¿½fini");
 
 		}
 
 		objectName = cmd;
-		// Lecture de la seconde valeur: le sélecteur.
+		// Lecture de la seconde valeur: le sï¿½lecteur.
 		// Celui-ci peut se trouver dans la liste d'arguments.
-		// Pour l'en récupérer, il faut utiliser la commande CMD_ARG
+		// Pour l'en rï¿½cupï¿½rer, il faut utiliser la commande CMD_ARG
 		cmd = readCommandFromInput();
 		AbstractAtom selector = cmd.interpretNoPut(this);
 		if (selector.isUndefined()) {
@@ -361,20 +367,20 @@ public class JarvisInterpreter {
 
 		CommandAtom.setAcceptUndefined(false);
 
-		// L'objet qui recoit le message possède son propre environnement.
-		// Dans cet environnement, on peut envoyer des messages à self,
-		// qui est un symbole référençant l'objet courant.
+		// L'objet qui recoit le message possï¿½de son propre environnement.
+		// Dans cet environnement, on peut envoyer des messages ï¿½ self,
+		// qui est un symbole rï¿½fï¿½renï¿½ant l'objet courant.
 		JarvisEnvironment objectEnvironment = new JarvisEnvironment(this, getEnvironment());
 
-		// Le symbole auquel est lié l'objet courant est self.
+		// Le symbole auquel est liï¿½ l'objet courant est self.
 		objectEnvironment.put("self", obj);
 		setEnvironment(objectEnvironment);
 
 		// Lecture des arguments directement
-		// Vous pouvez inclure des valeurs atomiques ou des symboles définis
-		// comme arguments. Les arguments restants seront récupérés dans la
-		// file d'arguments. Attention à l'ordre! Ceux dans la parenthèse
-		// passent en priorité.
+		// Vous pouvez inclure des valeurs atomiques ou des symboles dï¿½finis
+		// comme arguments. Les arguments restants seront rï¿½cupï¿½rï¿½s dans la
+		// file d'arguments. Attention ï¿½ l'ordre! Ceux dans la parenthï¿½se
+		// passent en prioritï¿½.
 		cmd = readCommandFromInput();
 		while (!cmd.isEndOfList()) {
 
@@ -383,33 +389,33 @@ public class JarvisInterpreter {
 		}
 		CommandAtom.setDontInterpret(false);
 
-		// Empile une commande qui détruira l'environnement de l'objet après
-		// l'évaluation du message.
+		// Empile une commande qui dï¿½truira l'environnement de l'objet aprï¿½s
+		// l'ï¿½valuation du message.
 		pushEval(CommandAtom.CMD_ENDOFENVIRONMENT);
-		// Interprète le message, obtient le membre correspondant.
+		// Interprï¿½te le message, obtient le membre correspondant.
 
 		res = obj.message(selector);
 
-		// Interprétation du résultat. Si c'est une méthode, elle sera
-		// exécutée dans l'environnement de self, avec les arguments
-		// présentement dans la file.
+		// Interprï¿½tation du rï¿½sultat. Si c'est une mï¿½thode, elle sera
+		// exï¿½cutï¿½e dans l'environnement de self, avec les arguments
+		// prï¿½sentement dans la file.
 		res.interpret(this);
 
-		// Message interprété. On sort de l'environnement de l'objet.
-		// BUG: Cette ligne a été retirée et remplacée par l'empilement d'une
+		// Message interprï¿½tï¿½. On sort de l'environnement de l'objet.
+		// BUG: Cette ligne a ï¿½tï¿½ retirï¿½e et remplacï¿½e par l'empilement d'une
 		// commande
-		// CMD_ENDOFENVIRONMENT au moment opportun. Empêchait l'accès aux
-		// paramètres d'une méthode.
+		// CMD_ENDOFENVIRONMENT au moment opportun. Empï¿½chait l'accï¿½s aux
+		// paramï¿½tres d'une mï¿½thode.
 		// setEnvironment(environment.getParent());
 
-		// Vérification du retour.
-		// Décommentez ces lignes si vous voulez un affichage de la valeur en
-		// tête
-		// de file après chaque message.
-		// Il est mieux d'insérer une commande CMD_ARGS directement dans votre
+		// Vï¿½rification du retour.
+		// Dï¿½commentez ces lignes si vous voulez un affichage de la valeur en
+		// tï¿½te
+		// de file aprï¿½s chaque message.
+		// Il est mieux d'insï¿½rer une commande CMD_ARGS directement dans votre
 		// code Jarvis pour voir la file au complet.
 		// Un message d'avertissement demeure si vous obtenez "ComprendPas".
-		// L'interpréteur crash également.
+		// L'interprï¿½teur crash ï¿½galement.
 
 		if (argQueue.size() > 0) {
 
@@ -430,40 +436,40 @@ public class JarvisInterpreter {
 
 	}
 
-	// Appelé lorsque la commande CMD_QUIT est interprétée.
+	// Appelï¿½ lorsque la commande CMD_QUIT est interprï¿½tï¿½e.
 	public void quit() {
 		hasQuit = true;
 	}
 
-	// Décompte du nombre d'arguments dans la file d'arguments.
+	// Dï¿½compte du nombre d'arguments dans la file d'arguments.
 	public int getArgCount() {
 		return argQueue.size();
 	}
 
-	// Défile l'argument en tête de file.
+	// Dï¿½file l'argument en tï¿½te de file.
 	public AbstractAtom getArg() {
 		return argQueue.remove();
 	}
 
-	// Enfile un argument. Utilisé lorsqu'un atome est interprété normalement
+	// Enfile un argument. Utilisï¿½ lorsqu'un atome est interprï¿½tï¿½ normalement
 	// (JarvisAtom.interpret)
 	public void putArg(AbstractAtom obj) {
 		argQueue.add(obj);
 	}
 
-	// Empile des commandes à évaluer.
+	// Empile des commandes ï¿½ ï¿½valuer.
 	public void pushEval(String expression) {
 		evalStack.push(expression);
 	}
 
-	// Envoie un message d'erreur à la console sans arrêter l'interpréteur.
+	// Envoie un message d'erreur ï¿½ la console sans arrï¿½ter l'interprï¿½teur.
 	private void outputErrorNoCrash(Object value) {
 		System.err.println(value);
 		println("");
 
 	}
 
-	// Permet de voir l'argument en tête de file.
+	// Permet de voir l'argument en tï¿½te de file.
 	public AbstractAtom peekArg() {
 
 		return argQueue.peek();
@@ -476,13 +482,13 @@ public class JarvisInterpreter {
 
 	}
 
-	// Utilisée pour obtenir la prochaine commande à interpréter.
+	// Utilisï¿½e pour obtenir la prochaine commande ï¿½ interprï¿½ter.
 	public CommandAtom readCommandFromInput() {
 		CommandAtom cmd = new CommandAtom(nextInput());
 		return cmd;
 	}
 
-	// Affichage de la file d'arguments. Appelé par la commande CMD_ARGS.
+	// Affichage de la file d'arguments. Appelï¿½ par la commande CMD_ARGS.
 	public void printArgs() {
 		print("Args: (");
 		for (AbstractAtom arg : argQueue) {
@@ -491,8 +497,8 @@ public class JarvisInterpreter {
 		println(")");
 	}
 
-	// Lorsqu'un nouveau symbole est créé avec la commande CMD_REF, il faut lier
-	// celui-ci à une valeur.
+	// Lorsqu'un nouveau symbole est crï¿½ï¿½ avec la commande CMD_REF, il faut lier
+	// celui-ci ï¿½ une valeur.
 	public AbstractAtom getValue() {
 
 		// Obtient d'abord ses valeurs de la file d'arguments
@@ -506,7 +512,7 @@ public class JarvisInterpreter {
 		return readAtomFromInput();
 	}
 
-	// Affichage de l'environnement courant. Appelé par la commande CMD_ENV
+	// Affichage de l'environnement courant. Appelï¿½ par la commande CMD_ENV
 	public void printEnvironment() {
 
 		environment.print();
@@ -526,10 +532,10 @@ public class JarvisInterpreter {
 	}
 
 	/*
-	 * Horrible fonction qui sert à lire plusieurs commandes sur la même ligne.
-	 * Le seul semblant de décortication de syntaxe se trouve ici, ainsi
-	 * qu'éparpillé dans les diverses fonctions de CommandAtom. Ne regardez pas
-	 * ça de trop près... ça fait mal aux yeux.
+	 * Horrible fonction qui sert ï¿½ lire plusieurs commandes sur la mï¿½me ligne.
+	 * Le seul semblant de dï¿½cortication de syntaxe se trouve ici, ainsi
+	 * qu'ï¿½parpillï¿½ dans les diverses fonctions de CommandAtom. Ne regardez pas
+	 * ï¿½a de trop prï¿½s... ï¿½a fait mal aux yeux.
 	 */
 	public String putTokensOnStack(String line) {
 		final String delims = " ()[]{}";
@@ -582,8 +588,8 @@ public class JarvisInterpreter {
 	}
 
 	/*
-	 * Fonction appelée pour obtenir la prochaine commande sous forme de string.
-	 * Regarde d'abord dans la pile d'évaluation.
+	 * Fonction appelï¿½e pour obtenir la prochaine commande sous forme de string.
+	 * Regarde d'abord dans la pile d'ï¿½valuation.
 	 */
 	public String nextInput() {
 
@@ -605,7 +611,7 @@ public class JarvisInterpreter {
 
 	/*
 	 * Patch pour lire correctement des fichiers avec la commande CMD_LOAD.
-	 * Devrait être utilisée par readLine, mais la combinaison est encore buggy.
+	 * Devrait ï¿½tre utilisï¿½e par readLine, mais la combinaison est encore buggy.
 	 */
 	public String readSignificantLine(BufferedReader r) {
 		String line = "";
@@ -625,10 +631,10 @@ public class JarvisInterpreter {
 	}
 
 	/*
-	 * Épouvantable fonction servant à lire la prochaine commande sous forme de
-	 * string, lorsque la pile d'évaluation est vide. Un peu trop de singeries
-	 * pour donner le bon comportement à l'interpréteur. Ne regardez pas de trop
-	 * près... ça fait saigner les yeux.
+	 * ï¿½pouvantable fonction servant ï¿½ lire la prochaine commande sous forme de
+	 * string, lorsque la pile d'ï¿½valuation est vide. Un peu trop de singeries
+	 * pour donner le bon comportement ï¿½ l'interprï¿½teur. Ne regardez pas de trop
+	 * prï¿½s... ï¿½a fait saigner les yeux.
 	 */
 	public String readLine() {
 		String s = "";
@@ -692,8 +698,8 @@ public class JarvisInterpreter {
 	}
 
 	/*
-	 * Fonction utile pour débugger. Affiche le contenu de la pile d'évaluation.
-	 * Attention, un peu cryptique à lire.
+	 * Fonction utile pour dï¿½bugger. Affiche le contenu de la pile d'ï¿½valuation.
+	 * Attention, un peu cryptique ï¿½ lire.
 	 */
 
 	public void printEvalStack() {

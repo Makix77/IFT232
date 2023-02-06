@@ -3,24 +3,23 @@
 !load Exemples/ifelse.txt
 !mute
 
-#Fonction de création de la classe Rectangle
-!{.
+#IfElse
     !{.
-        !(x * -1)
+        !(x - y)
     }
     !ref fonctionVrai
 
     !{.
-        !(x)
+        !(y - x)
     }
     !ref fonctionFaux
     !(ifelse new fonctionVrai fonctionFaux)
     !ref calcCondition
 
-    !{ x .
+    !{ x y .
 
     	#Test. Retourne un objet booléen
-    	!(x < 0)
+    	!(x > y)
     	!ref resultatTest
 
     	#Récupère l'atome booléen du résultat (donc vrai ou faux)
@@ -32,6 +31,9 @@
     	!(calcCondition vraifaux)
     }
     !ref ValeurAbsolue
+
+#Fonction de création de la classe Rectangle
+!{.
 
 	#RECTANGLE : à modifier
 	#fonction de calcul de la hauteur

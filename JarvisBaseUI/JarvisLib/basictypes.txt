@@ -3,8 +3,11 @@
 
 #HÉRITAGE: il manque la classe Object.
 # Vous devriez la définir ici.
-
-
+()
+[]
+()
+!(Class new)
+!ref Object
 
 #MUTATEUR: c'est une fonctionnalité 
 #de base de tous les objets...
@@ -17,7 +20,7 @@
 #Classe servant à faire des conditions
 ("true" "false")
 []
-
+()
 !(Class new)
 !ref ifelse
 
@@ -25,6 +28,7 @@
 #définition incomplète del a classe int.
 ("value")
 ["+" _integerAddPrimitive "-" _integerSubtractPrimitive "*" _integerMultiplyPrimitive "==" _integerEqualsPrimitive "<" _integerLessPrimitive ">" _integerMorePrimitive "/" _integerDividePrimitive]
+()
 !(Class new)
 !ref int
 
@@ -32,6 +36,7 @@
 #définition incomplète de la classe bool.
 ("value")
 ["&&" _booleanAndPrimitive "||" _booleanOrPrimitive "!" _booleanReversePrimitive]
+()
 !(Class new)
 !ref bool
 

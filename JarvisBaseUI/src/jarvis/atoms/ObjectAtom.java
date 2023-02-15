@@ -23,6 +23,7 @@ public class ObjectAtom extends AbstractAtom {
 	 */
 	public static final int ATTRIBUTE_FIELD =0;
 	public static final int METHOD_FIELD =1;
+	public static final int SUPER_FIELD=2;
 	
 	/*
 	 * Référence à la classe de cet objet.
@@ -86,14 +87,9 @@ public class ObjectAtom extends AbstractAtom {
 		if (pos == -1) {
 			// pas un attribut...
 			// Va chercher les méthodes
-			DictionnaryAtom methods = (DictionnaryAtom) classReference.values
-					.get(METHOD_FIELD);
-
-			// Cherche dans le dictionnaire
-			AbstractAtom res = methods.get(selector.makeKey());
+			AbstractAtom res = findMethod(classReference, selector);
 
 			if (res == null) {
-				
 				// Rien ne correspond au message
 				return new StringAtom("ComprendPas "+ selector);
 			} else {
@@ -147,4 +143,18 @@ public class ObjectAtom extends AbstractAtom {
 		
 	}
 
+	public AbstractAtom findMethod(ObjectAtom currentClass, AbstractAtom selector){
+		DictionnaryAtom methods = (DictionnaryAtom) currentClass.values.get(METHOD_FIELD);
+		AbstractAtom res = methods.get(selector.makeKey());
+		if(res == null){
+			ListAtom parents = (ListAtom) currentClass.values.get(SUPER_FIELD);
+			if(parents.size() == 0)
+				return null;
+			for(int i = 0; i < parents.size(); i++){
+				ObjectAtom parent = (ObjectAtom) parents.get(i);
+				return findMethod(parent, selector);
+			}
+		}
+		return res;
+	}
 }

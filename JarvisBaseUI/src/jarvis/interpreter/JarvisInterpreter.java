@@ -12,12 +12,7 @@ import java.util.Queue;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-import jarvis.atoms.AbstractAtom;
-import jarvis.atoms.CommandAtom;
-import jarvis.atoms.DictionnaryAtom;
-import jarvis.atoms.ListAtom;
-import jarvis.atoms.ObjectAtom;
-import jarvis.atoms.StringAtom;
+import jarvis.atoms.*;
 import jarvis.atoms.primitives.OperatorNewPrimitive;
 
 import jarvis.atoms.primitives.booleans.BooleanPrimitiveAnd;
@@ -182,9 +177,12 @@ public class JarvisInterpreter {
 		ListAtom members = new ListAtom();
 		members.add(new StringAtom("attributes"));
 		members.add(new StringAtom("methods"));
+		members.add(new StringAtom("super"));
 
 		HashMap<String, AbstractAtom> m = new HashMap<String, AbstractAtom>();
 		DictionnaryAtom methods = new DictionnaryAtom(m);
+
+		ListAtom supers = new ListAtom();
 
 		/*
 		 * Cette classe ne contient qu'une m�thode, new. Celle-ci fait usage de
@@ -203,6 +201,7 @@ public class JarvisInterpreter {
 
 		data.add(members);
 		data.add(methods);
+		data.add(supers);
 
 		ObjectAtom ClassClass = new ObjectAtom(null, data, this);
 

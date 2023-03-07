@@ -8,6 +8,7 @@
     <file url="file://$PROJECT_DIR$/Tests/rectangle.txt" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/jarvis/JarvisBoot.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/jarvis/atoms/AbstractAtom.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/jarvis/atoms/DictionnaryAtom.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/jarvis/atoms/ObjectAtom.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/jarvis/atoms/primitives/OperatorNewPrimitive.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/jarvis/atoms/primitives/integers/IntegerPrimitiveOperation.java" charset="windows-1252" />

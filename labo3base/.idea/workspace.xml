@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f2515552-38fa-48a1-95be-8b546e523635" name="Changes" comment="">
+    <list default="true" id="5883b1b7-ee56-4743-aedc-681d60d7567b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../JarvisBaseUI/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../JarvisBaseUI/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../JarvisBaseUI/Tests/heritagemembres.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../JarvisBaseUI/Tests/heritagemembres.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../JarvisBaseUI/out/production/JarvisBaseUI/jarvis/atoms/ObjectAtom.class" beforeDir="false" afterPath="$PROJECT_DIR$/../JarvisBaseUI/out/production/JarvisBaseUI/jarvis/atoms/ObjectAtom.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../JarvisBaseUI/out/production/JarvisBaseUI/jarvis/atoms/primitives/OperatorNewPrimitive.class" beforeDir="false" afterPath="$PROJECT_DIR$/../JarvisBaseUI/out/production/JarvisBaseUI/jarvis/atoms/primitives/OperatorNewPrimitive.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../JarvisBaseUI/src/jarvis/atoms/ObjectAtom.java" beforeDir="false" afterPath="$PROJECT_DIR$/../JarvisBaseUI/src/jarvis/atoms/ObjectAtom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../labo2base/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../labo2base/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-  </component>
-  <component name="ProjectId" id="2LVakuex8xcOiNm4SaRvDJ63mYP" />
+  <component name="ProjectId" id="2MhXJgvbmHoYsMApaelYjldLjDM" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -25,17 +23,17 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/olivi/Documents/Uni/Uds/Git/IFT232/labo3base"
+    "last_opened_file_path": "C:/Users/olivi/Documents/Uni/Uds/Git/IFT232/labo3base/src"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f2515552-38fa-48a1-95be-8b546e523635" name="Changes" comment="" />
-      <created>1675958850055</created>
+      <changelist id="5883b1b7-ee56-4743-aedc-681d60d7567b" name="Changes" comment="" />
+      <created>1678220717380</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1675958850055</updated>
+      <updated>1678220717380</updated>
     </task>
     <servers />
   </component>

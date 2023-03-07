@@ -75,34 +75,25 @@ public class ObjectAtom extends AbstractAtom {
 	 * Pour implanter l'héritage, cet algorithme doit nécessairement être modifié.
 	 */	
 	public AbstractAtom message(AbstractAtom selector) {
-		
-		
 		//Va chercher les attributs
-		ListAtom members = (ListAtom) classReference.values.get(ATTRIBUTE_FIELD);
+		ListAtom members = (ListAtom) classReference.getAllAttributes();
 
 		//Vérifie si c'est un attribut 
 		int pos = members.find(selector);
-		
-		
-		if (pos == -1) {
-			// pas un attribut...
-			// Va chercher les méthodes
-			AbstractAtom res = findMethod(classReference, selector);
 
-			if (res == null) {
-				// Rien ne correspond au message
-				return new StringAtom("ComprendPas "+ selector);
-			} else {
-				//C'est une méthode.
-				return res;
-			}
-
-		}
-
-		else {
-			//C'est un attribut.
+		if (pos != -1) {
 			return values.get(pos);
 		}
+
+		// Va chercher les méthodes
+		AbstractAtom res = findMethod(classReference, selector);
+
+		if (res != null) {
+			return res;
+		}
+		// Rien ne correspond au message
+		return new StringAtom("ComprendPas "+ selector);
+
 	}
 
 	public void setClass(ObjectAtom theClass) {
@@ -156,5 +147,20 @@ public class ObjectAtom extends AbstractAtom {
 			}
 		}
 		return res;
+	}
+	public ListAtom getAllAttributes(){
+		ListAtom attributes = (ListAtom)values.get(ATTRIBUTE_FIELD);
+		ListAtom parents = (ListAtom)values.get(SUPER_FIELD);
+		for(int i = 0; i < parents.size(); i++){
+			ObjectAtom parent = (ObjectAtom)parents.get(i);
+			ListAtom parentAttributes = (ListAtom)parent.values.get(ATTRIBUTE_FIELD);
+			for(int j = 0; j < attributes.size(); j++){
+				if(parentAttributes.find(attributes.get(j)) == -1){
+					parentAttributes.add(attributes.get(j));
+				}
+			}
+			return parent.getAllAttributes();
+		}
+		return attributes;
 	}
 }

@@ -26,7 +26,7 @@
 	
 	["son" sonFonction "manger" mangerFonction]
 	
-	Object
+	(Object)
 	
 	!(Class new)
 }
@@ -54,7 +54,7 @@
 	
 	["son" sonFonction "ageHumain" fonctionAgeHumain]
 	
-	Felin
+	(Felin)
 	
 	!(Class new)
 }
@@ -63,16 +63,12 @@
 
 #Définition de la classe Chat Domestique
 !{.
-
-	
-	
-	
 	
 	("nom")
 	
 	[]
 	
-	Chat
+	(Chat)
 	
 	!(Class new)
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/labo5/Labo5Main.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/labo5/Util.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/labo5/followers/MessageLog.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/labo5/followers/Reposter.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/labo5/ui/MessageView.java" charset="windows-1252" />
+  </component>
+</project>
